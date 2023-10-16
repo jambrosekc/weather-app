@@ -56,7 +56,23 @@ function formalDate(h2, now) {
 
 function calcHours2(hours, minutes) {
 
+
+
   hours = now.getHours();
+
+  if (hours < 10) {
+
+    hours = `0${hours}`;
+
+  }
+
+  minutes = now.getMinutes();
+
+  if (minutes < 10) {
+
+    minutes = `0${minutes}`;
+
+  }
 
   if (hours > 12) {
 
@@ -64,7 +80,15 @@ function calcHours2(hours, minutes) {
 
     displayTime = `${hours}:${minutes} PM`;
 
-  } else {
+  } else if(hours = 12) {
+
+    hours = hours;
+
+    displayTime = `${hours}:${minutes} PM`;
+
+  }
+
+    else {
 
     hours = hours;
 
@@ -82,55 +106,15 @@ formalDate(h2, now);
 
 
 
+function search(apiCity){
 
+  let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
 
-function convertToC(event) {
+  let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${apiCity}&appid=${apiKey}`;
 
-  event.preventDefault();
-
-  console.log(event.target.id);
-
-  let tempDisplay = document.querySelector("#temperature");
-
-  console.log(tempDisplay);
-
-  let clickC = document.querySelector("#celcius");
-
-  let clickF = document.querySelector("#fehren");
-
-  if (event.target.id === "celcius" && currentTempFormat !== "C") {
-
-    let temp = tempDisplay.innerHTML;
-
-    tempDisplay.innerHTML = Math.round((temp - 32) * (5 / 9));
-
-    currentTempFormat = "C"
-
-  } else if(event.target.id === "fehren" && currentTempFormat !== "F") {
-
-    let temp = tempDisplay.innerHTML;
-
-    tempDisplay.innerHTML = Math.round((temp * 9) / 5 + 32);
-
-    console.log(temp);
-
-    currentTempFormat = "F"
-
-  }
+  updatePage(apiUrl);
 
 }
-
-
-
-let currentTempFormat = "C";
-
-let link = document.querySelector("#celcius");
-
-link.addEventListener("click", convertToC)
-
-let link2 = document.querySelector("#fehren");
-
-link2.addEventListener("click", convertToC)
 
 
 
@@ -140,7 +124,17 @@ function clickSearch(event){
 
   let searchCity2 = document.querySelector("#city-input");
 
-  //console.log(searchCity2.value);
+  search(searchCity2.value)
+
+}
+
+
+
+/*     function clickSearch(event){
+
+  event?.preventDefault()
+
+  let searchCity2 = document.querySelector("#city-input");
 
   let apiCity = searchCity2.value;
 
@@ -148,15 +142,159 @@ function clickSearch(event){
 
   let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${apiCity}&appid=${apiKey}`;
 
-  updatePage(apiUrl)
+  updatePage(apiUrl);
 
-}
+} */
 
 
 
-let searchCity = document.querySelector("#search");
+/*     function convertToC(event) {
 
-searchCity.addEventListener("click", clickSearch);
+  event.preventDefault();
+
+    console.log("TempFormat", currentTempFormat)
+
+    console.log("event.targetid",event.target.id);
+
+  let tempDisplay = document.querySelector("#temperature");
+
+  let tempHiDisplayDay1 = document.querySelector("#day1_maxtemp");
+
+  let tempLoDisplayDay1 = document.querySelector("#day1_mintemp");
+
+  let tempHiDisplayDay2 = document.querySelector("#day2_maxtemp");
+
+  let tempLoDisplayDay2 = document.querySelector("#day2_mintemp");
+
+  let tempHiDisplayDay3 = document.querySelector("#day3_maxtemp");
+
+  let tempLoDisplayDay3 = document.querySelector("#day3_mintemp");
+
+  let tempHiDisplayDay4 = document.querySelector("#day4_maxtemp");
+
+  let tempLoDisplayDay4 = document.querySelector("#day4_mintemp");
+
+  let tempHiDisplayDay5 = document.querySelector("#day5_maxtemp");
+
+  let tempLoDisplayDay5 = document.querySelector("#day5_mintemp");      
+
+
+
+  if (event.target.id === "celcius" && currentTempFormat !== "C") {
+
+    console.log("If Case 1: TempFormat", currentTempFormat)
+
+    console.log("If Case 1: event.targetid",event.target.id);
+
+    let temp = tempDisplay.innerHTML;
+
+    let temp1_hi = tempHiDisplayDay1.innerHTML;
+
+    let temp1_lo = tempLoDisplayDay1.innerHTML;
+
+    let temp2_hi = tempHiDisplayDay2.innerHTML;
+
+    let temp2_lo = tempLoDisplayDay2.innerHTML;
+
+    let temp3_hi = tempHiDisplayDay3.innerHTML;
+
+    let temp3_lo = tempLoDisplayDay3.innerHTML;
+
+    let temp4_hi = tempHiDisplayDay4.innerHTML;
+
+    let temp4_lo = tempLoDisplayDay4.innerHTML;
+
+    let temp5_hi = tempHiDisplayDay5.innerHTML;
+
+    let temp5_lo = tempLoDisplayDay5.innerHTML;
+
+    tempDisplay.innerHTML = Math.round((temp - 32) * (5 / 9));
+
+    tempHiDisplayDay1.innerHTML = Math.round((temp1_hi - 32) * (5 / 9));
+
+    tempLoDisplayDay1.innerHTML = Math.round((temp1_lo - 32) * (5 / 9));
+
+    tempHiDisplayDay2.innerHTML = Math.round((temp2_hi - 32) * (5 / 9));
+
+    tempLoDisplayDay2.innerHTML = Math.round((temp2_lo - 32) * (5 / 9));
+
+    tempHiDisplayDay3.innerHTML = Math.round((temp3_hi - 32) * (5 / 9));
+
+    tempLoDisplayDay3.innerHTML = Math.round((temp3_lo - 32) * (5 / 9));
+
+    tempHiDisplayDay4.innerHTML = Math.round((temp4_hi - 32) * (5 / 9));
+
+    tempLoDisplayDay4.innerHTML = Math.round((temp4_lo - 32) * (5 / 9));
+
+    tempHiDisplayDay5.innerHTML = Math.round((temp5_hi - 32) * (5 / 9));
+
+    tempLoDisplayDay5.innerHTML = Math.round((temp5_lo - 32) * (5 / 9));
+
+    currentTempFormat = "C"
+
+    console.log("If Case 1: TempFormat", currentTempFormat)
+
+    console.log("If Case 1: event.targetid",event.target.id);
+
+  } else if(event.target.id === "fehren" && currentTempFormat !== "F") {
+
+    console.log("If Case 2: TempFormat", currentTempFormat)
+
+    console.log("If Case 2: event.targetid", event.target.id);
+
+    let temp = tempDisplay.innerHTML;
+
+    let temp1_hi = tempHiDisplayDay1.innerHTML;
+
+    let temp1_lo = tempLoDisplayDay1.innerHTML;
+
+    let temp2_hi = tempHiDisplayDay2.innerHTML;
+
+    let temp2_lo = tempLoDisplayDay2.innerHTML;
+
+    let temp3_hi = tempHiDisplayDay3.innerHTML;
+
+    let temp3_lo = tempLoDisplayDay3.innerHTML;
+
+    let temp4_hi = tempHiDisplayDay4.innerHTML;
+
+    let temp4_lo = tempLoDisplayDay4.innerHTML;
+
+    let temp5_hi = tempHiDisplayDay5.innerHTML;
+
+    let temp5_lo = tempLoDisplayDay5.innerHTML;
+
+    tempDisplay.innerHTML = Math.round((temp * 9) / 5 + 32);
+
+    tempHiDisplayDay1.innerHTML = Math.round((temp1_hi * 9) / 5 + 32);
+
+    tempLoDisplayDay1.innerHTML = Math.round((temp1_lo * 9) / 5 + 32);
+
+    tempHiDisplayDay2.innerHTML = Math.round((temp2_hi * 9) / 5 + 32);
+
+    tempLoDisplayDay2.innerHTML = Math.round((temp2_lo * 9) / 5 + 32);
+
+    tempHiDisplayDay3.innerHTML = Math.round((temp3_hi * 9) / 5 + 32);
+
+    tempLoDisplayDay3.innerHTML = Math.round((temp3_lo * 9) / 5 + 32);
+
+    tempHiDisplayDay4.innerHTML = Math.round((temp4_hi * 9) / 5 + 32);
+
+    tempLoDisplayDay4.innerHTML = Math.round((temp4_lo* 9) / 5 + 32);
+
+    tempHiDisplayDay5.innerHTML = Math.round((temp5_hi * 9) / 5 + 32);
+
+    tempLoDisplayDay5.innerHTML = Math.round((temp5_lo * 9) / 5 + 32);
+
+    currentTempFormat = "F"
+
+    console.log("If Case 2: TempFormat", currentTempFormat)
+
+    console.log("If Case 2: event.targetid",event.target.id);
+
+  }
+
+} */
 
 
 
@@ -164,7 +302,15 @@ function displayWeather2(response, tempDiv, tempdescDiv, cityDiv, humidityDiv, w
 
   let city = response.data.city.name;
 
-  let temperature = Math.round(response.data.list[0].main.temp-273.15);
+
+
+  let kelvinTemperature = response.data.list[0].main.temp;
+
+  celsiusTemperature = kelvinTemperature-273.15;
+
+
+
+  console.log(celsiusTemperature);
 
   let description = response.data.list[0].weather[0].description;
 
@@ -172,7 +318,9 @@ function displayWeather2(response, tempDiv, tempdescDiv, cityDiv, humidityDiv, w
 
   let windSpeed = response.data.list[0].wind.speed;
 
-  tempDiv.innerHTML = `${temperature}`;
+  tempDiv.innerHTML = Math.round(celsiusTemperature);
+
+  console.log(tempDiv.innerHTML);
 
   tempdescDiv.innerHTML = `${description}`;
 
@@ -194,15 +342,15 @@ function display5DayWeatherForecast(response, day1Max, day1Min, day2Max, day2Min
 
 
 
-  let day_1 = response.data.list[0].dt;
+  let day_1 = response.data.list[3].dt;
 
-  let day_2 = response.data.list[8].dt;
+  let day_2 = response.data.list[11].dt;
 
-  let day_3 = response.data.list[16].dt;
+  let day_3 = response.data.list[19].dt;
 
-  let day_4 = response.data.list[24].dt;
+  let day_4 = response.data.list[27].dt;
 
-  let day_5 = response.data.list[32].dt;
+  let day_5 = response.data.list[35].dt;
 
 
 
@@ -230,45 +378,49 @@ function display5DayWeatherForecast(response, day1Max, day1Min, day2Max, day2Min
 
 
 
-  let day1_Max = Math.round(response.data.list[0].main.temp_max-273.15);
+  cel_day1_Max = Math.round(response.data.list[6].main.temp_max-273.15);
 
-  let day1_Min = Math.round(response.data.list[0].main.temp_min-273.15);
+  cel_day1_Min = Math.round(response.data.list[3].main.temp_min-273.15);
 
-  let day2_Max = Math.round(response.data.list[8].main.temp_max-273.15);
+  cel_day2_Max = Math.round(response.data.list[14].main.temp_max-273.15);
 
-  let day2_Min = Math.round(response.data.list[8].main.temp_min-273.15);
+  cel_day2_Min = Math.round(response.data.list[11].main.temp_min-273.15);
 
-  let day3_Max = Math.round(response.data.list[16].main.temp_max-273.15);
+  cel_day3_Max = Math.round(response.data.list[22].main.temp_max-273.15);
 
-  let day3_Min = Math.round(response.data.list[16].main.temp_min-273.15);
+  cel_day3_Min = Math.round(response.data.list[19].main.temp_min-273.15);
 
-  let day4_Max = Math.round(response.data.list[24].main.temp_max-273.15);
+  cel_day4_Max = Math.round(response.data.list[30].main.temp_max-273.15);
 
-  let day4_Min = Math.round(response.data.list[24].main.temp_min-273.15);
+  cel_day4_Min = Math.round(response.data.list[27].main.temp_min-273.15);
 
-  let day5_Max = Math.round(response.data.list[32].main.temp_max-273.15);
+  cel_day5_Max = Math.round(response.data.list[38].main.temp_max-273.15);
 
-  let day5_Min = Math.round(response.data.list[32].main.temp_min-273.15);
+  cel_day5_Min = Math.round(response.data.list[35].main.temp_min-273.15);
 
-  day1Max.innerHTML = `${day1_Max}°`;
 
-  day1Min.innerHTML = `${day1_Min}°`;
 
-  day2Max.innerHTML = `${day2_Max}°`;
 
-  day2Min.innerHTML = `${day2_Min}°`;
 
-  day3Max.innerHTML = `${day3_Max}°`;
+  day1Max.innerHTML = cel_day1_Max;
 
-  day3Min.innerHTML = `${day3_Min}°`;
+  day1Min.innerHTML = cel_day1_Min;
 
-  day4Max.innerHTML = `${day4_Max}°`;
+  day2Max.innerHTML = cel_day2_Max;
 
-  day4Min.innerHTML = `${day4_Min}°`;
+  day2Min.innerHTML = cel_day2_Min;
 
-  day5Max.innerHTML = `${day5_Max}°`;
+  day3Max.innerHTML = cel_day3_Max;
 
-  day5Min.innerHTML = `${day5_Min}°`;
+  day3Min.innerHTML = cel_day3_Min;
+
+  day4Max.innerHTML = cel_day4_Max;
+
+  day4Min.innerHTML = cel_day4_Min;
+
+  day5Max.innerHTML = cel_day5_Max;
+
+  day5Min.innerHTML = cel_day5_Min;
 
   day1.innerHTML = `${day1_}`;
 
@@ -318,15 +470,9 @@ function display5DayWeatherForecast(response, day1Max, day1Min, day2Max, day2Min
 
 
 
-  console.log(icon0num);
-
-  console.log(icon1num);
-
-  console.log(icon2num);
-
-
-
 }
+
+
 
 
 
@@ -335,6 +481,8 @@ function updatePage(apiUrl){
   axios.get(apiUrl).then((response) => {
 
     console.log(response)
+
+   
 
     let tempDiv = document.querySelector("#temperature");
 
@@ -345,6 +493,10 @@ function updatePage(apiUrl){
     let humidityDiv = document.querySelector("#humidity");
 
     let windDiv = document.querySelector("#wind");
+
+    let testDiv = document.querySelector("#test");
+
+
 
     let day1Max = document.querySelector("#day1_maxtemp");
 
@@ -392,11 +544,11 @@ function updatePage(apiUrl){
 
 
 
-    displayWeather2(response, tempDiv, tempdescDiv, cityDiv, humidityDiv, windDiv)
+    displayWeather2(response, tempDiv, tempdescDiv, cityDiv, humidityDiv, windDiv);
 
     display5DayWeatherForecast(response, day1Max, day1Min, day2Max, day2Min, day3Max, day3Min, day4Max, day4Min, day5Max, day5Min, day1, day2, day3, day4, day5, icon0, icon1, icon2, icon3, icon4, icon5)
 
-  }).catch(err => {
+  })/* .catch(err => {
 
     console.log("error")
 
@@ -406,15 +558,209 @@ function updatePage(apiUrl){
 
   });
 
-
+*/
 
 }
 
-function error404(err, searchCity2) {
+/*     function error404(err, searchCity2) {
 
   alert(`${searchCity2.value}: ${err.response.data.message}`)
 
   console.log("how is this function getting searchCity2?");
 
+} */
+
+
+
+function displayFahrenheitTemperature(event) {
+
+  event.preventDefault();
+
+  //celsiusLink.classList.remove("active");
+
+  //fahrenheitLink.classList.add("active");
+
+  let temperatureElement = document.querySelector("#temperature");
+
+  let tempHiDisplayDay1 = document.querySelector("#day1_maxtemp");
+
+  let tempLoDisplayDay1 = document.querySelector("#day1_mintemp");
+
+  let tempHiDisplayDay2 = document.querySelector("#day2_maxtemp");
+
+  let tempLoDisplayDay2 = document.querySelector("#day2_mintemp");
+
+  let tempHiDisplayDay3 = document.querySelector("#day3_maxtemp");
+
+  let tempLoDisplayDay3 = document.querySelector("#day3_mintemp");
+
+  let tempHiDisplayDay4 = document.querySelector("#day4_maxtemp");
+
+  let tempLoDisplayDay4 = document.querySelector("#day4_mintemp");
+
+  let tempHiDisplayDay5 = document.querySelector("#day5_maxtemp");
+
+  let tempLoDisplayDay5 = document.querySelector("#day5_mintemp");  
+
+
+
+  let fahrenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
+
+
+
+  let fahrenheitTemperature0 = (cel_day1_Max * 9) / 5 + 32;
+
+  let fahrenheitTemperature1 = (cel_day1_Min * 9) / 5 + 32;
+
+  let fahrenheitTemperature2 = (cel_day2_Max * 9) / 5 + 32;
+
+  let fahrenheitTemperature3 = (cel_day2_Min * 9) / 5 + 32;
+
+  let fahrenheitTemperature4 = (cel_day3_Max * 9) / 5 + 32;
+
+  let fahrenheitTemperature5 = (cel_day3_Min * 9) / 5 + 32;
+
+  let fahrenheitTemperature6 = (cel_day4_Max * 9) / 5 + 32;
+
+  let fahrenheitTemperature7 = (cel_day4_Min * 9) / 5 + 32;
+
+  let fahrenheitTemperature8 = (cel_day5_Max * 9) / 5 + 32;
+
+  let fahrenheitTemperature9 = (cel_day5_Min * 9) / 5 + 32;
+
+
+
+
+  temperatureElement.innerHTML = Math.round(fahrenheitTemperature);
+
+  tempHiDisplayDay1.innerHTML = Math.round(fahrenheitTemperature0);
+
+  tempLoDisplayDay1.innerHTML = Math.round(fahrenheitTemperature1);
+
+  tempHiDisplayDay2.innerHTML = Math.round(fahrenheitTemperature2);
+
+  tempLoDisplayDay2.innerHTML = Math.round(fahrenheitTemperature3);
+
+  tempHiDisplayDay3.innerHTML = Math.round(fahrenheitTemperature4);
+
+  tempLoDisplayDay3.innerHTML = Math.round(fahrenheitTemperature5);
+
+  tempHiDisplayDay4.innerHTML = Math.round(fahrenheitTemperature6);
+
+  tempLoDisplayDay4.innerHTML = Math.round(fahrenheitTemperature7);
+
+  tempHiDisplayDay5.innerHTML = Math.round(fahrenheitTemperature8);
+
+  tempLoDisplayDay5.innerHTML = Math.round(fahrenheitTemperature9);
+
+
+
 }
 
+
+
+function displayCelsiusTemperature(event) {
+
+  event.preventDefault();
+
+  //fahrenheitLink.classList.remove("active");
+
+  //celsiusLink.classList.add("active");
+
+  let temperatureElement = document.querySelector("#temperature");
+
+  let tempHiDisplayDay1 = document.querySelector("#day1_maxtemp");
+
+  let tempLoDisplayDay1 = document.querySelector("#day1_mintemp");
+
+  let tempHiDisplayDay2 = document.querySelector("#day2_maxtemp");
+
+  let tempLoDisplayDay2 = document.querySelector("#day2_mintemp");
+
+  let tempHiDisplayDay3 = document.querySelector("#day3_maxtemp");
+
+  let tempLoDisplayDay3 = document.querySelector("#day3_mintemp");
+
+  let tempHiDisplayDay4 = document.querySelector("#day4_maxtemp");
+
+  let tempLoDisplayDay4 = document.querySelector("#day4_mintemp");
+
+  let tempHiDisplayDay5 = document.querySelector("#day5_maxtemp");
+
+  let tempLoDisplayDay5 = document.querySelector("#day5_mintemp");  
+
+
+
+  temperatureElement.innerHTML = Math.round(celsiusTemperature);
+
+  tempHiDisplayDay1.innerHTML = Math.round(cel_day1_Max);
+
+  tempLoDisplayDay1.innerHTML = Math.round(cel_day1_Min);
+
+  tempHiDisplayDay2.innerHTML = Math.round(cel_day2_Max);
+
+  tempLoDisplayDay2.innerHTML = Math.round(cel_day2_Min);
+
+  tempHiDisplayDay3.innerHTML = Math.round(cel_day3_Max);
+
+  tempLoDisplayDay3.innerHTML = Math.round(cel_day3_Min);
+
+  tempHiDisplayDay4.innerHTML = Math.round(cel_day4_Max);
+
+  tempLoDisplayDay4.innerHTML = Math.round(cel_day4_Min);
+
+  tempHiDisplayDay5.innerHTML = Math.round(cel_day5_Max);
+
+  tempLoDisplayDay5.innerHTML = Math.round(cel_day5_Min);
+
+
+
+}
+
+
+
+let celsiusTemperature = null;
+
+let cel_day1_Max = null;
+
+let cel_day1_Min = null;
+
+let cel_day2_Max = null;
+
+let cel_day2_Min = null;
+
+let cel_day3_Max = null;
+
+let cel_day3_Min = null;
+
+let cel_day4_Max = null;
+
+let cel_day4_Min = null;
+
+let cel_day5_Max = null;
+
+let cel_day5_Min = null;
+
+
+
+
+
+let searchCity = document.querySelector("#search");
+
+searchCity.addEventListener("click", clickSearch);
+
+
+
+let link = document.querySelector("#celcius");
+
+link.addEventListener("click", displayCelsiusTemperature)
+
+
+
+let link2 = document.querySelector("#fehren");
+
+link2.addEventListener("click", displayFahrenheitTemperature)
+
+
+
+search("New York");
