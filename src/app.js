@@ -576,9 +576,9 @@ function displayFahrenheitTemperature(event) {
 
   event.preventDefault();
 
-  //celsiusLink.classList.remove("active");
+  celsiusLink.classList.remove("active");
 
-  //fahrenheitLink.classList.add("active");
+  fahrenheitLink.classList.add("active");
 
   let temperatureElement = document.querySelector("#temperature");
 
@@ -663,9 +663,9 @@ function displayCelsiusTemperature(event) {
 
   event.preventDefault();
 
-  //fahrenheitLink.classList.remove("active");
+  fahrenheitLink.classList.remove("active");
 
-  //celsiusLink.classList.add("active");
+  celsiusLink.classList.add("active");
 
   let temperatureElement = document.querySelector("#temperature");
 
@@ -751,15 +751,15 @@ searchCity.addEventListener("click", clickSearch);
 
 
 
-let link = document.querySelector("#celcius");
+let celsiusLink = document.querySelector("#celsius-link");
 
-link.addEventListener("click", displayCelsiusTemperature)
+celsiusLink.addEventListener("click", displayCelsiusTemperature)
 
 
 
-let link2 = document.querySelector("#fehren");
+let fahrenheitLink = document.querySelector("#fahrenheit-link");
 
-link2.addEventListener("click", displayFahrenheitTemperature)
+fahrenheitLink.addEventListener("click", displayFahrenheitTemperature)
 
 
 

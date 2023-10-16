@@ -221,8 +221,28 @@ body {
     line-height: 1;
   
   }
+
+  .Weather .active {
   
-   
+    color: rgb(33, 33, 33);
+  
+    cursor: default;
+  
+  }
+
+  .Weather .active:hover {
+  
+    text-decoration: none;
+  
+  }
+
+
+  .Weather .active:hover {
+  
+    text-decoration: none;
+  
+  }
+
   
   .Weather footer {
   
