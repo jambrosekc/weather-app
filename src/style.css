@@ -207,32 +207,40 @@ body {
    
   
   .temperature-container .units {
-  
     color: rgb(33, 33, 33);
-  
     font-size: 28px;
-  
     line-height: 36px;
-  
     font-weight: normal;
-  
     position: relative;
-  
     line-height: 1;
-  
+  }
+
+  .temperature-container .units a {
+    color: #885df1;
+  }
+
+  .temperature-container .units a:hover {
+    background-image: linear-gradient(135deg, #f34079, 40%, #fc894d);
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    color:white !important;
+    text-decoration: none;
+    box-shadow: 2px 2px 5px #fc894d;
   }
 
   .temperature-container .active {
-  
-    color: rgb(33, 33, 33);
-  
     cursor: default;
-  
+    background-image: linear-gradient(135deg, #f34079, 40%, #fc894d);
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    color:white !important;
   }
 
-  .temperature-container .active:hover {
-  
+  .temperature-container .units a:hover.active{
     text-decoration: none;
+    box-shadow: none !important;
   
   }
 

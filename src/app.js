@@ -320,7 +320,7 @@ function displayWeather2(response, tempDiv, tempdescDiv, cityDiv, humidityDiv, w
 
   let humidity = response.data.list[0].main.humidity;
 
-  let windSpeed = response.data.list[0].wind.speed;
+  let windSpeed = Math.round(response.data.list[0].wind.speed*3.6);
 
   tempDiv.innerHTML = Math.round(celsiusTemperature);
 
@@ -330,9 +330,9 @@ function displayWeather2(response, tempDiv, tempdescDiv, cityDiv, humidityDiv, w
 
   cityDiv.innerHTML = `${city}`;
 
-  humidityDiv.innerHTML = ` ${humidity}%`;
+  humidityDiv.innerHTML = ` ${humidity} %`;
 
-  windDiv.innerHTML = ` ${windSpeed}km/h`;
+  windDiv.innerHTML = ` ${windSpeed} km/h`;
 
 }
 
