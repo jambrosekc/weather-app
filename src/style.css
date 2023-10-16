@@ -206,7 +206,7 @@ body {
   
    
   
-  .Weather .units {
+  .temperature-container .units {
   
     color: rgb(33, 33, 33);
   
@@ -222,7 +222,7 @@ body {
   
   }
 
-  .Weather .active {
+  .temperature-container .active {
   
     color: rgb(33, 33, 33);
   
@@ -230,18 +230,12 @@ body {
   
   }
 
-  .Weather .active:hover {
+  .temperature-container .active:hover {
   
     text-decoration: none;
   
   }
 
-
-  .Weather .active:hover {
-  
-    text-decoration: none;
-  
-  }
 
   
   .Weather footer {

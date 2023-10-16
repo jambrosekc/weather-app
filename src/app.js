@@ -120,7 +120,11 @@ function search(apiCity){
 
 function clickSearch(event){
 
-  event?.preventDefault()
+  event.preventDefault()
+
+  fahrenheitLink.classList.remove("active");
+
+  celsiusLink.classList.add("active");
 
   let searchCity2 = document.querySelector("#city-input");
 
