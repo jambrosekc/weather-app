@@ -46,41 +46,7 @@ function calcHours(timestamp) {
   return displayTime; 
 }
 
-function displayForecast() {
-  let forecastElement = document.querySelector("#forecast");
 
-  let forecastHTML = `<div class="row pleasework2">`;
-
-
-  let days = ['Sun','Mon','Tues','Wed','Thurs'];
-
-  days.forEach(function (day){
-
-  forecastHTML = forecastHTML + 
-    `
-    <div class="col" >
-      <div class="WeatherForecastPreview">
-        <div class="forecast-time" id="day1">Sun</div>
-        <img 
-        id="day1_img" 
-        src="https://openweathermap.org/img/wn/04n@2x.png" 
-        class="weather-icon" />
-        <div class="forecast-temperature">
-          <span class="forecast-temperature-max" id="day1_maxtemp">28</span>
-          <span>°</span>
-          <span class="forecast-temperature-min" id="day1_mintemp">21</span>
-          <span>°</span>
-        </div>
-      </div>
-    </div>
-    `;
-
-  })
-
-
-
-  forecastElement.innerHTML = forecastHTML;
-}
 
 function displayWeather(response) {
   let dateDiv = document.querySelector("#time-display");
@@ -89,8 +55,6 @@ function displayWeather(response) {
   let cityDiv = document.querySelector("#cityInput");
   let humidityDiv = document.querySelector("#humidity");
   let windDiv = document.querySelector("#wind");
-
-  displayForecast();
 
   let city = response.data.city.name;
   let kelvinTemperature = response.data.list[0].main.temp;
@@ -321,3 +285,4 @@ let fahrenheitLink= document.querySelector("#fahrenheit-link");
 fahrenheitLink.addEventListener("click", displayFahrenheitTemperature)
 
 search("New York");
+
