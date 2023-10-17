@@ -160,11 +160,6 @@ body {
   padding-bottom: 50px;
 }
 
-row.pleasework2 {
-  flex: 1 0 20% !important;
-  justify-content: space-around;
-}
-
 .WeatherForecast .forecast-time {
   font-size: 16px;
   line-height: 20px;
