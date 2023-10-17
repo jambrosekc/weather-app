@@ -1,326 +1,149 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="src/style.css" />
-
   <script src=https://unpkg.com/axios/dist/axios.min.js></script>
-
   <link rel="stylesheet" href=https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css
-
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-
   <title>Weather App</title>
-
 </head>
-
 <body>
-
   <div id="root">
-
     <div class="App">
-
       <div class="container">
-
         <div class="Weather">
-
           <form id="search-form">
-
             <div class="row">
-
               <div class="col-9">
-
-                <input
-
-                type="search"
-
-                id="city-input"
-
-                placeholder="Enter a city.."
-
-                autofocus="on" autocomplete="off"
-
-                class="form-control search-input" />
-
+                <input type="search" id="city-input" placeholder="Enter a city.." autofocus="on" autocomplete="off"
+                  class="form-control search-input" />
               </div>
-
               <div class="col-3 p-0">
-
                 <input id="search" type="submit" value="Search" class="form-control btn btn-primary w-100" />
-
               </div>
-
             </div>
-
           </form>
 
-     
-
           <div class="WeatherInfo">
-
             <div class="row">
-
-     
-
               <div class="col-6">
-
                 <h1 class="cityInputh1" id="cityInput">
-
                   San Fransisco
-
                 </h1>
-
                 <ul>
-
                   <li>
-
-                    <span class="timedisplay" id="time-display">Friday 13:26</span>, <span class="weatherdisplay" id="temperature-desc">
-
+                    <span class="timedisplay" id="time-display">Friday 13:26</span>, <span class="weatherdisplay"
+                      id="temperature-desc">
                       Partly Cloudy
-
                     </span>
-
                   </li>
-
                   <li>
-
                     <span class="humidity-span" id="humidityname">
-
                       Humidity:
-
                     </span>
-
                     <span class="humidity-perc" id="humidity"> 77%</span>,
-
                     <span class="wind-span" id="windname">
-
                       Wind:
-
                     </span>
-
                     <span class="wind-perc" id="wind"> 8 km/h</span>
-
                 </ul>
-
               </div>
-
- 
 
               <div class="col-lg-6 col-md-6 col-sm-8">
-
                 <div class="temperature-container d-flex justify-content-end">
-
-                  <img
-
-                  id="day0_img"
-
-                  src=https://openweathermap.org/img/wn/04n@2x.png
-
-                  class="weather-icon float-left" />
-
+                  <img id="day0_img" src=https://openweathermap.org/img/wn/04n@2x.png class="weather-icon float-left" />
                   <div class="float-left temp-display">
-
                     <span class="temperature" id="temperature">19</span>
-
                     <span class="units">
-
-                      <a class = "active" id="celsius-link" href="#">°C</a> |
-
-                      <a class = "" id="fahrenheit-link" href="#">°F</a>
-
+                      <a class="active" id="celsius-link" href="#">°C</a> |
+                      <a class="" id="fahrenheit-link" href="#">°F</a>
                     </span>
-
                   </div>
-
                 </div>
-
-              </div>      
-
- 
-
+              </div>
             </div>
-
           </div>
-
- 
 
           <div class="row WeatherForecast">
-
             <div class="col">
-
               <div class="WeatherForecastPreview">
-
                 <div class="forecast-time" id="day1">Sun</div>
-
-                <img
-
-                id="day1_img"
-
-                src=https://openweathermap.org/img/wn/04n@2x.png
-
-                class="weather-icon" />
-
+                <img id="day1_img" src=https://openweathermap.org/img/wn/04n@2x.png class="weather-icon" />
                 <div class="forecast-temperature">
-
                   <span class="forecast-temperature-max" id="day1_maxtemp">28</span>
                   <span>°</span>
-
                   <span class="forecast-temperature-min" id="day1_mintemp">21</span>
                   <span>°</span>
-
                 </div>
-
               </div>
-
             </div>
 
- 
-
             <div class="col">
-
               <div class="WeatherForecastPreview">
-
                 <div class="forecast-time" id="day2">Mon</div>
-
-                <img
-
-                id="day2_img"
-
-                src=https://openweathermap.org/img/wn/04n@2x.png
-
-                class="weather-icon" />
-
+                <img id="day2_img" src=https://openweathermap.org/img/wn/04n@2x.png class="weather-icon" />
                 <div class="forecast-temperature">
-
                   <span class="forecast-temperature-max" id="day2_maxtemp">28</span>
                   <span>°</span>
-
                   <span class="forecast-temperature-min" id="day2_mintemp">21</span>
                   <span>°</span>
-
                 </div>
-
-              </div>        
-
+              </div>
             </div>
 
- 
+
 
             <div class="col">
-
               <div class="WeatherForecastPreview">
-
                 <div class="forecast-time" id="day3">Tues</div>
-
-                <img
-
-                id="day3_img"
-
-                src=https://openweathermap.org/img/wn/04n@2x.png
-
-                class="weather-icon" />
-
+                <img id="day3_img" src=https://openweathermap.org/img/wn/04n@2x.png class="weather-icon" />
                 <div class="forecast-temperature">
-
                   <span class="forecast-temperature-max" id="day3_maxtemp">28</span>
                   <span>°</span>
-
                   <span class="forecast-temperature-min" id="day3_mintemp">21</span>
                   <span>°</span>
-
                 </div>
-
-              </div>          
-
+              </div>
             </div>
 
- 
-
             <div class="col">
-
               <div class="WeatherForecastPreview">
-
                 <div class="forecast-time" id="day4">Wed</div>
-
-                <img
-
-                id="day4_img"
-
-                src=https://openweathermap.org/img/wn/04n@2x.png
-
-                class="weather-icon" />
-
+                <img id="day4_img" src=https://openweathermap.org/img/wn/04n@2x.png class="weather-icon" />
                 <div class="forecast-temperature">
-
                   <span class="forecast-temperature-max" id="day4_maxtemp">28</span>
                   <span>°</span>
-
                   <span class="forecast-temperature-min" id="day4_mintemp">21</span>
                   <span>°</span>
-
                 </div>
-
-              </div>          
-
+              </div>
             </div>
-
- 
 
             <div class="col">
-
               <div class="WeatherForecastPreview">
-
                 <div class="forecast-time" id="day5_disp">Thr</div>
-
-                <img
-
-                id="day5_img"
-
-                src=https://openweathermap.org/img/wn/04n@2x.png
-
-                class="weather-icon" />
-
+                <img id="day5_img" src=https://openweathermap.org/img/wn/04n@2x.png class="weather-icon" />
                 <div class="forecast-temperature">
-
                   <span class="forecast-temperature-max" id="day5_maxtemp">28</span>
                   <span>°</span>
-
                   <span class="forecast-temperature-min" id="day5_mintemp">21</span>
                   <span>°</span>
-
                 </div>
-
-              </div>          
-
+              </div>
             </div>
 
- 
-
           </div>
-
-          <footer>This project was coded by Jess Ambrose and is <a href="https://github.com/jambrosekc/weather-app" target="_blank" rel="noopener noreferrer">open-sourced on GitHub</a> and <a href="https://spacecatweather.netlify.app" target="_blank" rel="noopener noreferrer">hosted on Netlify</a></footer>
-
-     
-
+          <footer>This project was coded by Jess Ambrose and is <a href="https://github.com/jambrosekc/weather-app"
+              target="_blank" rel="noopener noreferrer">open-sourced on GitHub</a> and <a
+              href="https://spacecatweather.netlify.app" target="_blank" rel="noopener noreferrer">hosted on Netlify</a>
+          </footer>
         </div>
-
-      </div>      
-
+      </div>
     </div>
-
   </div>
 
-
-
-
   <script src="./src/app.js"></script>
-
 </body>
-
 </html>
