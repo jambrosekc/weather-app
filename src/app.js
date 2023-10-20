@@ -4,21 +4,6 @@ function formatDate(timestamp) {
   let day = days[now.getDay()];
   let hours = now.getHours();
   let minutes = now.getMinutes();
-  let months = [
-    "Jan",
-    "Feb",
-    "March",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ];
-  let month = months[now.getMonth()];
   let newHours = calcHours(hours, minutes);
   return `${day} ${newHours}`;
 }
@@ -47,7 +32,6 @@ function calcHours(timestamp) {
 }
 
 
-
 function displayWeather(response) {
   let dateDiv = document.querySelector("#time-display");
   let tempDiv = document.querySelector("#temperature");
@@ -56,23 +40,26 @@ function displayWeather(response) {
   let humidityDiv = document.querySelector("#humidity");
   let windDiv = document.querySelector("#wind");
 
-  let city = response.data.city.name;
+  
   let kelvinTemperature = response.data.list[0].main.temp;
   celsiusTemperature = kelvinTemperature-273.15;
+
+  let city = response.data.city.name;
   let description = response.data.list[0].weather[0].description;
   let humidity = response.data.list[0].main.humidity;
   let windSpeed = response.data.list[0].wind.speed;
 
   dateDiv.innerHTML = formatDate(response.data.list[0].dt * 1000);
   tempDiv.innerHTML = Math.round(celsiusTemperature);
-  console.log(tempDiv.innerHTML);
   tempdescDiv.innerHTML = `${description}`;
   cityDiv.innerHTML = `${city}`;
   humidityDiv.innerHTML = ` ${humidity}%`;
   windDiv.innerHTML = ` ${windSpeed}km/h`;
 }
 
+
 function display5DayWeatherForecast(response) {
+
   let day1Max = document.querySelector("#day1_maxtemp");
   let day1Min = document.querySelector("#day1_mintemp");
   let day1 = document.querySelector("#day1");
@@ -116,6 +103,7 @@ function display5DayWeatherForecast(response) {
   var day4_ = days[today_plus3.getDay()]
   var day5_ = days[today_plus4.getDay()]
 
+  // 5dayForecast.push({max: response.data.list[num].main.temp_max-273.15, min: samething, day:whateverDay})
   cel_day1_Max = Math.round(response.data.list[6].main.temp_max-273.15);
   cel_day1_Min = Math.round(response.data.list[3].main.temp_min-273.15);
   cel_day2_Max = Math.round(response.data.list[14].main.temp_max-273.15);
@@ -130,7 +118,7 @@ function display5DayWeatherForecast(response) {
   day1Max.innerHTML = cel_day1_Max;
   day1Min.innerHTML = cel_day1_Min;
   day2Max.innerHTML = cel_day2_Max;
-  day2Min.innerHTML = cel_day2_Min;
+  day2Min.innerHTML = cel_day2_Min; 
   day3Max.innerHTML = cel_day3_Max;
   day3Min.innerHTML = cel_day3_Min;
   day4Max.innerHTML = cel_day4_Max;
@@ -193,6 +181,18 @@ function displayFahrenheitTemperature(event) {
   event.preventDefault();
   celsiusLink.classList.remove("active");
   fahrenheitLink.classList.add("active");
+
+  const tempDay = [];
+/* 
+Change to:
+  max
+
+    for
+
+    "day"= num + "_" + manmin + "temp"
+
+  min */
+
   let temperatureElement = document.querySelector("#temperature");
   let tempHiDisplayDay1 = document.querySelector("#day1_maxtemp");
   let tempLoDisplayDay1 = document.querySelector("#day1_mintemp");
@@ -222,7 +222,7 @@ function displayFahrenheitTemperature(event) {
   tempHiDisplayDay1.innerHTML = Math.round(fahrenheitTemperature0);
   tempLoDisplayDay1.innerHTML = Math.round(fahrenheitTemperature1);
   tempHiDisplayDay2.innerHTML = Math.round(fahrenheitTemperature2);
-  tempLoDisplayDay2.innerHTML = Math.round(fahrenheitTemperature3);
+  tempLoDisplayDay2.innerHTML = Math.round(fahrenheitTemperature3); 
   tempHiDisplayDay3.innerHTML = Math.round(fahrenheitTemperature4);
   tempLoDisplayDay3.innerHTML = Math.round(fahrenheitTemperature5);
   tempHiDisplayDay4.innerHTML = Math.round(fahrenheitTemperature6);
@@ -235,6 +235,7 @@ function displayCelsiusTemperature(event) {
   event.preventDefault();
   fahrenheitLink.classList.remove("active");
   celsiusLink.classList.add("active");
+
   let temperatureElement = document.querySelector("#temperature");
   let tempHiDisplayDay1 = document.querySelector("#day1_maxtemp");
   let tempLoDisplayDay1 = document.querySelector("#day1_mintemp");
@@ -261,10 +262,51 @@ function displayCelsiusTemperature(event) {
 }
 
 
-let celsiusTemperature = null;
 
-console.log(celsiusTemperature);
-let cel_day1_Max = null;
+/* const cell0 = [{max:0, min:100, day:1}, {min:10, max:20, day:2}]
+cell0.forEach(c=> {
+  let max = document.querySelector("#day"+c.day+"_maxtemp");
+  let min = document.querySelector("#day"+c.day+"_mintemp")
+  max.innerHTML = Math.round(c.max)
+  min.innerHTML = Math.round(c.min)
+  console.log(max.innerHTML);
+  console.log(min.innerHTML);
+})
+ */
+
+
+const initial_cell = [{day:1, max:null, min:null}, {day:2, max:null, min:null},{day:3, max:null, min:null}, {day:4, max:null, min:null},{day:5, max:null, min:null}];
+
+function LoopThroughCelcTempMax(initial_cell){
+  let cell = initial_cell
+  let cel_dayx_Max = "cel_day"+c.day+"_Max";
+  cell.forEach((c, value) => {
+    //initial_cell.push(cel_dayx_Max)
+    c.cel_dayx_Max = null;
+    console.log(c.day+': '+cel_dayx_Max+': '+c.cel_dayx_Max);
+    console.log(value);
+  })
+}
+
+function LoopThroughCelcTempMin(initial_cell){
+    let cell = initial_cell
+    cell.forEach((c, value)=> {
+      let cel_dayx_Min = "cel_day"+c.day+"_Min";
+      initial_cell.push(cel_dayx_Min)
+      c.cel_dayx_Min = null;
+      console.log(c.day+': '+cel_dayx_Min+': '+c.cel_dayx_Min);
+      console.log(value);
+    })
+}
+
+
+
+//LoopThroughCelcTempMax(initial_cell);
+LoopThroughCelcTempMin(initial_cell);
+console.log(initial_cell);
+
+let celsiusTemperature = null;
+/* let cel_day1_Max = null;
 let cel_day1_Min = null;
 let cel_day2_Max = null;
 let cel_day2_Min = null;
@@ -273,7 +315,7 @@ let cel_day3_Min = null;
 let cel_day4_Max = null;
 let cel_day4_Min = null;
 let cel_day5_Max = null;
-let cel_day5_Min = null;
+let cel_day5_Min = null; */
 
 let searchButton = document.querySelector("#search");
 searchButton.addEventListener("click", clickSearch);
@@ -284,4 +326,32 @@ celsiusLink.addEventListener("click", displayCelsiusTemperature)
 let fahrenheitLink= document.querySelector("#fahrenheit-link");
 fahrenheitLink.addEventListener("click", displayFahrenheitTemperature)
 
-search("New York");
+search("New York"); 
+
+/* const data = {
+  city:
+  {
+    name: "New York",
+  },
+
+  list:[
+    {
+      dt:"16777", 
+      dt_txt: "blah blah blah",
+      main:{
+        temp: 289.15,
+        feels_like:289.15,
+        temp_min:289.15,
+        temp_max:289.15,
+        humidity:289.15
+        },
+      weather:[
+        {
+          description:"overcast clouds",
+          icon: 804
+        }
+      ]
+    }
+  ],
+} */
+
