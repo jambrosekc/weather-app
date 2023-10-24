@@ -1,10 +1,46 @@
+let cell = [];
+
+function LoopThroughCelcTempMax(numberOfDays){
+  console.log(cell);
+  for (let i=1; i<numberOfDays+1; i++) {
+    let cel_dayx_Max = "cel_day"+i+"_Max";
+    let dayObject = {"day":i, "max":null, "min": null, [cel_dayx_Max]:null};
+    cell.push(dayObject);
+    //console.log(dayObject)
+  }
+  //console.log(Object.keys(cell[0]));
+}
+
+LoopThroughCelcTempMax(5);
+//console.log(cell[0].cel_day1_Max);
+//console.log(Object.keys(cell[0])[3]);
+
+/* cell.forEach(index => {
+  console.log(Object.keys(index)[3]);
+  console.log(Object.values(index)[3]);
+}) */
+
+/* Object.keys(cell[0]).forEach(key => {
+  console.log(key, cell[0][key]);
+}) */
+function set_cel_dayx_Null(cell){
+  cell.forEach((c,index) => {
+    c = 3;
+    console.log(Object.keys(cell[index])[c]);
+    console.log(Object.values(cell[index])[c]);
+    let cel_dayx_Max = Object.values(cell[index])[c];
+    return cel_dayx_Max;
+    })
+}
+
+set_cel_dayx_Null(cell);
+
+
 function formatDate(timestamp) {
   let now = new Date(timestamp);
   let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   let day = days[now.getDay()];
-  let hours = now.getHours();
-  let minutes = now.getMinutes();
-  let newHours = calcHours(hours, minutes);
+  let newHours = calcHours(timestamp);
   return `${day} ${newHours}`;
 }
 function calcHours(timestamp) {
@@ -104,18 +140,55 @@ function display5DayWeatherForecast(response) {
   var day5_ = days[today_plus4.getDay()]
 
   // 5dayForecast.push({max: response.data.list[num].main.temp_max-273.15, min: samething, day:whateverDay})
+/* 
+  let tempmax = [];
+  let tempmin = [];
+
+  for(i=0; i<response.data.list.length; i++){
+    let datetime = response.data.list[i].dt;
+    let date = new Date(datetime*1000).getDate();
+    for(j=0; j<response.data.list.length; j++){
+      let datetime2 = response.data.list[j].dt;
+      let date2 = new Date(datetime2*1000).getDate();
+      console.log([date, date2]);
+      if (date == date2){
+        console.log("here");
+        tempmax.push({"date":date,"value":response.data.list[j].main.temp_max});
+        tempmin.push({"date":date, "value":response.data.list[j].main.temp_min});
+      }
+    }
+  }
+    console.log(tempmax);
+    console.log(tempmin);
+    var result = tempmax.filter(item => item.date === 21)
+    console.log(result);
+ */
+
+
+/*   cell.forEach(c=> {
+    let max = document.querySelector("#day"+c.day+"_maxtemp");
+    let min = document.querySelector("#day"+c.day+"_mintemp")
+    max.innerHTML = Math.round(c.max)
+    min.innerHTML = Math.round(c.min)
+  })
+  */ 
+
   cel_day1_Max = Math.round(response.data.list[6].main.temp_max-273.15);
   cel_day1_Min = Math.round(response.data.list[3].main.temp_min-273.15);
+
   cel_day2_Max = Math.round(response.data.list[14].main.temp_max-273.15);
   cel_day2_Min = Math.round(response.data.list[11].main.temp_min-273.15);
+
   cel_day3_Max = Math.round(response.data.list[22].main.temp_max-273.15);
   cel_day3_Min = Math.round(response.data.list[19].main.temp_min-273.15);
+
   cel_day4_Max = Math.round(response.data.list[30].main.temp_max-273.15);
   cel_day4_Min = Math.round(response.data.list[27].main.temp_min-273.15);
+
   cel_day5_Max = Math.round(response.data.list[38].main.temp_max-273.15);
   cel_day5_Min = Math.round(response.data.list[35].main.temp_min-273.15);
 
-  day1Max.innerHTML = cel_day1_Max;
+  day1Max.innerHTML = cell[0]
   day1Min.innerHTML = cel_day1_Min;
   day2Max.innerHTML = cel_day2_Max;
   day2Min.innerHTML = cel_day2_Min; 
@@ -150,6 +223,8 @@ function updatePage(apiUrl){
     console.log(response)
     displayWeather(response);
     display5DayWeatherForecast(response)
+    let data = response.data;
+
   })/* .catch(err => {
     console.log("error")
     let searchCity2 = document.querySelector("#city-input");
@@ -262,51 +337,83 @@ function displayCelsiusTemperature(event) {
 }
 
 
+let myArrayMin = [{"day":1},{"day":2}]
+function add_dayx_Min(myArrayMin){
+    let cell = myArrayMin;
+    let myArrayMin2 = []
+    cell.forEach((c, value)=> {
+      let cel_dayx_Min = "cel_day"+c.day+"_Min";
+      c.cel_dayx_Min = null;
+      console.log(cel_dayx_Min);
+      myArrayMin2.push(cel_dayx_Min)
+      //console.log(c.day+': '+cel_dayx_Min+': '+c.cel_dayx_Min);
+      //console.log(value);
+      //console.log(Object.keys(cell[value])[1]);
+      //console.log(Object.values(cell[value])[1]);
+      //return myArrayMin2;
+    })
+    return myArrayMin2;
+}
 
-/* const cell0 = [{max:0, min:100, day:1}, {min:10, max:20, day:2}]
-cell0.forEach(c=> {
+
+
+add_dayx_Min(myArrayMin);
+console.log(myArrayMin);
+console.log(myArrayMin[0]);
+console.log(add_dayx_Min(myArrayMin)[0]);
+console.log(myArrayMin[0].cel_dayx_Min);
+
+
+
+myArrayMin.forEach(c=> {
   let max = document.querySelector("#day"+c.day+"_maxtemp");
   let min = document.querySelector("#day"+c.day+"_mintemp")
   max.innerHTML = Math.round(c.max)
   min.innerHTML = Math.round(c.min)
-  console.log(max.innerHTML);
-  console.log(min.innerHTML);
 })
- */
 
 
-const initial_cell = [{day:1, max:null, min:null}, {day:2, max:null, min:null},{day:3, max:null, min:null}, {day:4, max:null, min:null},{day:5, max:null, min:null}];
+let myArrayMinOpt2 = [{"day":1},{"day":2}]
+let myArrayMin22 = [];
+function add_dayx_Min2(myArrayMinOpt2){
+    let cell = myArrayMinOpt2;
 
-function LoopThroughCelcTempMax(initial_cell){
-  let cell = initial_cell
-  let cel_dayx_Max = "cel_day"+c.day+"_Max";
-  cell.forEach((c, value) => {
-    //initial_cell.push(cel_dayx_Max)
-    c.cel_dayx_Max = null;
-    console.log(c.day+': '+cel_dayx_Max+': '+c.cel_dayx_Max);
-    console.log(value);
-  })
-}
-
-function LoopThroughCelcTempMin(initial_cell){
-    let cell = initial_cell
     cell.forEach((c, value)=> {
       let cel_dayx_Min = "cel_day"+c.day+"_Min";
-      initial_cell.push(cel_dayx_Min)
       c.cel_dayx_Min = null;
-      console.log(c.day+': '+cel_dayx_Min+': '+c.cel_dayx_Min);
-      console.log(value);
+      console.log(cel_dayx_Min);
+      myArrayMin22.push(cel_dayx_Min)
+      //console.log(c.day+': '+cel_dayx_Min+': '+c.cel_dayx_Min);
+      //console.log(value);
+      //console.log(Object.keys(cell[value])[1]);
+      //console.log(Object.values(cell[value])[1]);
+      //return myArrayMin2;
     })
+
+}
+
+add_dayx_Min2(myArrayMinOpt2);
+console.log(myArrayMinOpt2);
+console.log(myArrayMinOpt2[0]);
+console.log(myArrayMin22);
+console.log(myArrayMinOpt2[0].cel_dayx_Min);
+
+
+let myArrayMax = [];
+function add_dayx_Max(numberOfDays){
+  console.log(myArrayMax);
+  for (let i=1; i<numberOfDays+1; i++) {
+    let cel_dayx_Max = "cel_day"+i+"_Max";
+    let dayObject = {"day":i, [cel_dayx_Max]:null};
+    myArrayMax.push(dayObject);
+    //console.log(dayObject)
+  }
+  //console.log(Object.keys(cell[0]));
 }
 
 
-
-//LoopThroughCelcTempMax(initial_cell);
-LoopThroughCelcTempMin(initial_cell);
-console.log(initial_cell);
-
 let celsiusTemperature = null;
-/* let cel_day1_Max = null;
+let cel_day1_Max = null;
 let cel_day1_Min = null;
 let cel_day2_Max = null;
 let cel_day2_Min = null;
@@ -315,7 +422,7 @@ let cel_day3_Min = null;
 let cel_day4_Max = null;
 let cel_day4_Min = null;
 let cel_day5_Max = null;
-let cel_day5_Min = null; */
+let cel_day5_Min = null; 
 
 let searchButton = document.querySelector("#search");
 searchButton.addEventListener("click", clickSearch);
@@ -327,6 +434,7 @@ let fahrenheitLink= document.querySelector("#fahrenheit-link");
 fahrenheitLink.addEventListener("click", displayFahrenheitTemperature)
 
 search("New York"); 
+
 
 /* const data = {
   city:
@@ -354,4 +462,3 @@ search("New York");
     }
   ],
 } */
-
