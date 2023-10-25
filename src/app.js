@@ -2,36 +2,16 @@ function formatDate(timestamp) {
   let now = new Date(timestamp);
   let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   let day = days[now.getDay()];
-  let hours = now.getHours();
-  let minutes = now.getMinutes();
-  let months = [
-    "Jan",
-    "Feb",
-    "March",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ];
-  let month = months[now.getMonth()];
-  let newHours = calcHours(hours, minutes);
+  let newHours = calcHours(timestamp);
   return `${day} ${newHours}`;
 }
+
 function calcHours(timestamp) {
   let now = new Date(timestamp);
   let hours = now.getHours();
   let minutes = now.getMinutes();
-  if (hours < 10) {
-    hours = `0${hours}`;
-  }
-  minutes = now.getMinutes();
   if (minutes < 10) {
-    minutes = `0${minutes}`;
+      minutes = `0${minutes}`;
   }
   if (hours > 12) {
     hours = hours - 12;
@@ -39,16 +19,35 @@ function calcHours(timestamp) {
   } else if(hours = 12) {
     hours = hours;
     displayTime = `${hours}:${minutes} PM`;
-  } else {
+  } else if(hours < 12) {
+
     hours = hours;
     displayTime = `${hours}:${minutes} AM`;
+
+    if (hours < 10) {
+        hours = `0${hours}`;
+        displayTime = `${hours}:${minutes} AM`;
+      }
+
   }
   return displayTime; 
 }
 
+function convertCToF(cel_dayx_M){
+  let fahrenheightTempX = (cel_dayx_M * 9) / 5 + 32;
+  return Math.round(fahrenheightTempX);
+}
 
+function convertKToF(tempK){
+  return Math.round((convertKToC(tempK) * 9) / 5 + 32);
+}
+
+function convertKToC(tempK){
+  return Math.round(tempK-273.15);
+}
 
 function displayWeather(response) {
+  console.log(response)
   let dateDiv = document.querySelector("#time-display");
   let tempDiv = document.querySelector("#temperature");
   let tempdescDiv = document.querySelector("#temperature-desc");
@@ -56,23 +55,27 @@ function displayWeather(response) {
   let humidityDiv = document.querySelector("#humidity");
   let windDiv = document.querySelector("#wind");
 
-  let city = response.data.city.name;
-  let kelvinTemperature = response.data.list[0].main.temp;
-  celsiusTemperature = kelvinTemperature-273.15;
-  let description = response.data.list[0].weather[0].description;
-  let humidity = response.data.list[0].main.humidity;
-  let windSpeed = response.data.list[0].wind.speed;
+  let city = response.data.name;
+  let kelvinTemperature = response.data.main.temp;
+  celsiusTemperature = convertKToC(kelvinTemperature);
 
-  dateDiv.innerHTML = formatDate(response.data.list[0].dt * 1000);
+  let description = response.data.weather[0].description;
+  let humidity = response.data.main.humidity;
+  let windSpeed = response.data.wind.speed;
+
+  dateDiv.innerHTML = formatDate(response.data.dt * 1000);
   tempDiv.innerHTML = Math.round(celsiusTemperature);
-  console.log(tempDiv.innerHTML);
   tempdescDiv.innerHTML = `${description}`;
   cityDiv.innerHTML = `${city}`;
   humidityDiv.innerHTML = ` ${humidity}%`;
   windDiv.innerHTML = ` ${windSpeed}km/h`;
+
+  getForecast(response.data.name);
 }
 
 function display5DayWeatherForecast(response) {
+
+  console.log(response.data);
   let day1Max = document.querySelector("#day1_maxtemp");
   let day1Min = document.querySelector("#day1_mintemp");
   let day1 = document.querySelector("#day1");
@@ -98,11 +101,11 @@ function display5DayWeatherForecast(response) {
   
   var days = ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat'];
 
-  let day_1 = response.data.list[3].dt;
-  let day_2 = response.data.list[11].dt;
-  let day_3 = response.data.list[19].dt;
-  let day_4 = response.data.list[27].dt;
-  let day_5 = response.data.list[35].dt;
+  let day_1 = response.data.list[0].dt;
+  let day_2 = response.data.list[8].dt;
+  let day_3 = response.data.list[16].dt;
+  let day_4 = response.data.list[24].dt;
+  let day_5 = response.data.list[32].dt;
 
   let today = new Date(day_1*1000)
   let today_plus1 = new Date(day_2*1000)
@@ -159,33 +162,31 @@ function display5DayWeatherForecast(response) {
 
 function updatePage(apiUrl){
   axios.get(apiUrl).then((response) => {
-    console.log(response)
+    //console.log(response)
     displayWeather(response);
-    display5DayWeatherForecast(response)
-  })/* .catch(err => {
-    console.log("error")
-    let searchCity2 = document.querySelector("#city-input");
-    error404(err, searchCity2)
-  });
-*/
+  })
 }
-/*     function error404(err, searchCity2) {
-  alert(`${searchCity2.value}: ${err.response.data.message}`)
-  console.log("how is this function getting searchCity2?");
-} */
+
 
 function search(apiCity){
-  let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${apiCity}&appid=${apiKey}`;
+  let apiKey = "154aea7825e304bd5cc777c00a53518d";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${apiCity}&appid=${apiKey}`;
   updatePage(apiUrl);
 }
+
+function getForecast(apiCity){
+  let apiKey = "154aea7825e304bd5cc777c00a53518d";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${apiCity}&appid=${apiKey}`;
+  axios.get(apiUrl).then(display5DayWeatherForecast);
+}
+
 
 function clickSearch(event){
   event?.preventDefault()
   fahrenheitLink.classList.remove("active");
   celsiusLink.classList.add("active");
   let cityInputElement = document.querySelector("#city-input");
-  search(cityInputElement.value)
+  search(cityInputElement.value);
 }
 
 
@@ -229,7 +230,7 @@ function displayFahrenheitTemperature(event) {
   tempLoDisplayDay4.innerHTML = Math.round(fahrenheitTemperature7);
   tempHiDisplayDay5.innerHTML = Math.round(fahrenheitTemperature8);
   tempLoDisplayDay5.innerHTML = Math.round(fahrenheitTemperature9);
-}
+} 
 
 function displayCelsiusTemperature(event) {
   event.preventDefault();
@@ -285,3 +286,8 @@ let fahrenheitLink= document.querySelector("#fahrenheit-link");
 fahrenheitLink.addEventListener("click", displayFahrenheitTemperature)
 
 search("New York");
+
+
+
+search("New York"); 
+
