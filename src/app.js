@@ -259,12 +259,12 @@ function displayFahrenheitTemperature(event) {
   myArray[1].tempHiDisplay.innerHTML = convertCToF(array_cel_dayx_Max[1].cel_dayx_Max);
   myArray[2].tempHiDisplay.innerHTML = convertCToF(array_cel_dayx_Max[2].cel_dayx_Max);
   myArray[3].tempHiDisplay.innerHTML = convertCToF(array_cel_dayx_Max[3].cel_dayx_Max);
-  myArray[3].tempHiDisplay.innerHTML = convertCToF(array_cel_dayx_Max[4].cel_dayx_Max);
+  myArray[4].tempHiDisplay.innerHTML = convertCToF(array_cel_dayx_Max[4].cel_dayx_Max);
   myArray[0].tempLoDisplay.innerHTML = convertCToF(array_cel_dayx_Min[0].cel_dayx_Min);
   myArray[1].tempLoDisplay.innerHTML = convertCToF(array_cel_dayx_Min[1].cel_dayx_Min);
   myArray[2].tempLoDisplay.innerHTML = convertCToF(array_cel_dayx_Min[2].cel_dayx_Min);
   myArray[3].tempLoDisplay.innerHTML = convertCToF(array_cel_dayx_Min[3].cel_dayx_Min);
-  myArray[3].tempLoDisplay.innerHTML = convertCToF(array_cel_dayx_Min[4].cel_dayx_Min);
+  myArray[4].tempLoDisplay.innerHTML = convertCToF(array_cel_dayx_Min[4].cel_dayx_Min);
 } 
 
 function displayCelsiusTemperature(event) {
