@@ -20,15 +20,12 @@ function calcHours(timestamp) {
     hours = hours;
     displayTime = `${hours}:${minutes} PM`;
   } else if(hours < 12) {
-
     hours = hours;
     displayTime = `${hours}:${minutes} AM`;
-
     if (hours < 10) {
         hours = `0${hours}`;
         displayTime = `${hours}:${minutes} AM`;
       }
-
   }
   return displayTime; 
 }
@@ -56,6 +53,7 @@ function displayWeather(response) {
   let windDiv = document.querySelector("#wind");
 
   let city = response.data.name;
+
   let kelvinTemperature = response.data.main.temp;
   celsiusTemperature = convertKToC(kelvinTemperature);
 
@@ -70,12 +68,16 @@ function displayWeather(response) {
   humidityDiv.innerHTML = ` ${humidity}%`;
   windDiv.innerHTML = ` ${windSpeed}km/h`;
 
+  let icon0 = document.querySelector("#day0_img");
+  let icon0num = response.data.weather[0].icon;
+  icon0.setAttribute("src", `https://openweathermap.org/img/wn/${icon0num}@2x.png`);
+
+  console.log(response.data);
+
   getForecast(response.data.name);
 }
 
 function display5DayWeatherForecast(response) {
-
-  console.log(response.data);
   let day1Max = document.querySelector("#day1_maxtemp");
   let day1Min = document.querySelector("#day1_mintemp");
   let day1 = document.querySelector("#day1");
@@ -91,82 +93,127 @@ function display5DayWeatherForecast(response) {
   let day5Max = document.querySelector("#day5_maxtemp");
   let day5Min = document.querySelector("#day5_mintemp");
   let day5 = document.querySelector("#day5_disp");
-
-  let icon0 = document.querySelector("#day0_img");
   let icon1 = document.querySelector("#day1_img");
   let icon2 = document.querySelector("#day2_img");
   let icon3 = document.querySelector("#day3_img");
   let icon4 = document.querySelector("#day4_img");
   let icon5 = document.querySelector("#day5_img");
-  
-  var days = ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat'];
 
-  let day_1 = response.data.list[0].dt;
-  let day_2 = response.data.list[8].dt;
-  let day_3 = response.data.list[16].dt;
-  let day_4 = response.data.list[24].dt;
-  let day_5 = response.data.list[32].dt;
-
-  let today = new Date(day_1*1000)
-  let today_plus1 = new Date(day_2*1000)
-  let today_plus2 = new Date(day_3*1000)
-  let today_plus3 = new Date(day_4*1000)
-  let today_plus4 = new Date(day_5*1000)
-
-  var day1_ = days[today.getDay()]
-  var day2_ = days[today_plus1.getDay()]
-  var day3_ = days[today_plus2.getDay()]
-  var day4_ = days[today_plus3.getDay()]
-  var day5_ = days[today_plus4.getDay()]
-
-  cel_day1_Max = Math.round(response.data.list[6].main.temp_max-273.15);
-  cel_day1_Min = Math.round(response.data.list[3].main.temp_min-273.15);
-  cel_day2_Max = Math.round(response.data.list[14].main.temp_max-273.15);
-  cel_day2_Min = Math.round(response.data.list[11].main.temp_min-273.15);
-  cel_day3_Max = Math.round(response.data.list[22].main.temp_max-273.15);
-  cel_day3_Min = Math.round(response.data.list[19].main.temp_min-273.15);
-  cel_day4_Max = Math.round(response.data.list[30].main.temp_max-273.15);
-  cel_day4_Min = Math.round(response.data.list[27].main.temp_min-273.15);
-  cel_day5_Max = Math.round(response.data.list[38].main.temp_max-273.15);
-  cel_day5_Min = Math.round(response.data.list[35].main.temp_min-273.15);
-
-  day1Max.innerHTML = cel_day1_Max;
-  day1Min.innerHTML = cel_day1_Min;
-  day2Max.innerHTML = cel_day2_Max;
-  day2Min.innerHTML = cel_day2_Min;
-  day3Max.innerHTML = cel_day3_Max;
-  day3Min.innerHTML = cel_day3_Min;
-  day4Max.innerHTML = cel_day4_Max;
-  day4Min.innerHTML = cel_day4_Min;
-  day5Max.innerHTML = cel_day5_Max;
-  day5Min.innerHTML = cel_day5_Min;
+  var day1_ = getDayOfW(response)[0];
+  var day2_ = getDayOfW(response)[1];
+  var day3_ = getDayOfW(response)[2];
+  var day4_ = getDayOfW(response)[3];
+  var day5_ = getDayOfW(response)[4];
   day1.innerHTML = `${day1_}`;
   day2.innerHTML = `${day2_}`;
   day3.innerHTML = `${day3_}`;
   day4.innerHTML = `${day4_}`;
   day5.innerHTML = `${day5_}`;
 
-  let icon0num = response.data.list[0].weather[0].icon;
-  icon0.setAttribute("src", `https://openweathermap.org/img/wn/${icon0num}@2x.png`);
-  let icon1num = response.data.list[3].weather[0].icon;
+  array_cel_dayx_Max = [];
+  function update_dayx_Max(numberOfDays){
+    
+    for (let i=1; i<numberOfDays+1; i++) {
+      let dayObject = {
+        "day":i, 
+        "cel_dayx_Max":convertKToC(getMax2(response, getDay(response)[i-1].today_plus))
+      };
+      array_cel_dayx_Max.push(dayObject);
+    }
+  }
+  update_dayx_Max(5);
+  array_cel_dayx_Min = [];
+  function update_dayx_Min(numberOfDays){
+    for (let i=1; i<numberOfDays+1; i++) {
+      let dayObject = {
+        "day":i, 
+        "cel_dayx_Min":convertKToC(getMin2(response, getDay(response)[i-1].today_plus))
+      };
+      array_cel_dayx_Min.push(dayObject);
+    }
+  }
+  update_dayx_Min(5);
+  cel_day1_Max = array_cel_dayx_Max[0].cel_dayx_Max;
+  cel_day2_Max = array_cel_dayx_Max[1].cel_dayx_Max;
+  cel_day3_Max = array_cel_dayx_Max[2].cel_dayx_Max;
+  cel_day4_Max = array_cel_dayx_Max[3].cel_dayx_Max;
+  cel_day5_Max = array_cel_dayx_Max[4].cel_dayx_Max;
+  day1Max.innerHTML = cel_day1_Max;
+  day2Max.innerHTML = cel_day2_Max;
+  day3Max.innerHTML = cel_day3_Max;
+  day4Max.innerHTML = cel_day4_Max;
+  day5Max.innerHTML = cel_day5_Max;
+
+  cel_day1_Min = array_cel_dayx_Min[0].cel_dayx_Min;
+  cel_day2_Min = array_cel_dayx_Min[1].cel_dayx_Min;
+  cel_day3_Min = array_cel_dayx_Min[2].cel_dayx_Min;
+  cel_day4_Min = array_cel_dayx_Min[3].cel_dayx_Min;
+  cel_day5_Min = array_cel_dayx_Min[4].cel_dayx_Min;
+  day1Min.innerHTML = cel_day1_Min;
+  day2Min.innerHTML = cel_day2_Min;
+  day3Min.innerHTML = cel_day3_Min;
+  day4Min.innerHTML = cel_day4_Min;
+  day5Min.innerHTML = cel_day5_Min;
+
+  let icon1num = getIcon(response, getDay(response)[0].today_plus);
   icon1.setAttribute("src", `https://openweathermap.org/img/wn/${icon1num}@2x.png`);
-  let icon2num = response.data.list[11].weather[0].icon;
+  let icon2num = getIcon(response, getDay(response)[1].today_plus);
   icon2.setAttribute("src",`https://openweathermap.org/img/wn/${icon2num}@2x.png`);
-  let icon3num = response.data.list[19].weather[0].icon;
+  let icon3num = getIcon(response, getDay(response)[2].today_plus);
   icon3.setAttribute("src",`https://openweathermap.org/img/wn/${icon3num}@2x.png`);
-  let icon4num = response.data.list[27].weather[0].icon;
+  let icon4num =getIcon(response, getDay(response)[3].today_plus);
   icon4.setAttribute("src",`https://openweathermap.org/img/wn/${icon4num}@2x.png`) ;
-  let icon5num = response.data.list[35].weather[0].icon;
+  let icon5num = getIcon(response, getDay(response)[4].today_plus);
   icon5.setAttribute("src",`https://openweathermap.org/img/wn/${icon5num}@2x.png`);
 }
 
 function updatePage(apiUrl){
-  axios.get(apiUrl).then((response) => {
-    //console.log(response)
+  axios.get(apiUrl).then(
+    (response) => {
     displayWeather(response);
   })
 }
 
+function getDay(response){
+  let day = ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat'];
+  let days = [];
+  for (let i = 0; i<5; i++){
+    let day = "today_plus";
+    let dt = response.data.list[(i*8)].dt;
+    let dt_conv = new Date(dt*1000);
+    let day_val =  (dt_conv).getDay();
+    let dayObject = {[day]:day_val}
+    days.push(dayObject);
+  }
+  return days;
+}
+
+function getDayOfW(response){
+  let days = [];
+  for (let i = 0; i<5; i++){
+    let day = ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat'];
+    let object = getDay(response);
+    daynum = object[i].today_plus;
+    let dayx = day[daynum];
+    days.push(dayx);
+  }
+  return days;
+}
+
+function getMax2(response, day){
+  let min = Math.max(...response.data.list.filter(i=>((new Date(i.dt*1000)).getDay() === day)).map(i=>(i.main.temp_max)))
+  return Math.round(min);
+}
+
+function getMin2(response, day){
+  let min = Math.min(...response.data.list.filter(i=>((new Date(i.dt*1000)).getDay() === day)).map(i=>(i.main.temp_min)))
+  return Math.round(min);
+}
+
+function getIcon(response, day){
+  let myObject = response.data.list.filter(i=>((new Date(i.dt*1000)).getDay() === day)).reduce((prev, curr) => prev.main.temp_min < curr.main.temp_min ? prev : curr);
+  return myObject.weather[0].icon;
+}
 
 function search(apiCity){
   let apiKey = "154aea7825e304bd5cc777c00a53518d";
@@ -177,9 +224,12 @@ function search(apiCity){
 function getForecast(apiCity){
   let apiKey = "154aea7825e304bd5cc777c00a53518d";
   let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${apiCity}&appid=${apiKey}`;
-  axios.get(apiUrl).then(display5DayWeatherForecast);
+  axios.get(apiUrl).then(
+    (response) => {
+    display5DayWeatherForecast(response);
+    getDay(response);
+  })
 }
-
 
 function clickSearch(event){
   event?.preventDefault()
@@ -189,91 +239,156 @@ function clickSearch(event){
   search(cityInputElement.value);
 }
 
-
 function displayFahrenheitTemperature(event) {
   event.preventDefault();
   celsiusLink.classList.remove("active");
   fahrenheitLink.classList.add("active");
+
   let temperatureElement = document.querySelector("#temperature");
-  let tempHiDisplayDay1 = document.querySelector("#day1_maxtemp");
-  let tempLoDisplayDay1 = document.querySelector("#day1_mintemp");
-  let tempHiDisplayDay2 = document.querySelector("#day2_maxtemp");
-  let tempLoDisplayDay2 = document.querySelector("#day2_mintemp");
-  let tempHiDisplayDay3 = document.querySelector("#day3_maxtemp");
-  let tempLoDisplayDay3 = document.querySelector("#day3_mintemp");
-  let tempHiDisplayDay4 = document.querySelector("#day4_maxtemp");
-  let tempLoDisplayDay4 = document.querySelector("#day4_mintemp");
-  let tempHiDisplayDay5 = document.querySelector("#day5_maxtemp");
-  let tempLoDisplayDay5 = document.querySelector("#day5_mintemp");  
-
   let fahrenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
-
-  let fahrenheitTemperature0 = (cel_day1_Max * 9) / 5 + 32;
-  let fahrenheitTemperature1 = (cel_day1_Min * 9) / 5 + 32;
-  let fahrenheitTemperature2 = (cel_day2_Max * 9) / 5 + 32;
-  let fahrenheitTemperature3 = (cel_day2_Min * 9) / 5 + 32;
-  let fahrenheitTemperature4 = (cel_day3_Max * 9) / 5 + 32;
-  let fahrenheitTemperature5 = (cel_day3_Min * 9) / 5 + 32;
-  let fahrenheitTemperature6 = (cel_day4_Max * 9) / 5 + 32;
-  let fahrenheitTemperature7 = (cel_day4_Min * 9) / 5 + 32;
-  let fahrenheitTemperature8 = (cel_day5_Max * 9) / 5 + 32;
-  let fahrenheitTemperature9 = (cel_day5_Min * 9) / 5 + 32;
-
   temperatureElement.innerHTML = Math.round(fahrenheitTemperature);
-  tempHiDisplayDay1.innerHTML = Math.round(fahrenheitTemperature0);
-  tempLoDisplayDay1.innerHTML = Math.round(fahrenheitTemperature1);
-  tempHiDisplayDay2.innerHTML = Math.round(fahrenheitTemperature2);
-  tempLoDisplayDay2.innerHTML = Math.round(fahrenheitTemperature3);
-  tempHiDisplayDay3.innerHTML = Math.round(fahrenheitTemperature4);
-  tempLoDisplayDay3.innerHTML = Math.round(fahrenheitTemperature5);
-  tempHiDisplayDay4.innerHTML = Math.round(fahrenheitTemperature6);
-  tempLoDisplayDay4.innerHTML = Math.round(fahrenheitTemperature7);
-  tempHiDisplayDay5.innerHTML = Math.round(fahrenheitTemperature8);
-  tempLoDisplayDay5.innerHTML = Math.round(fahrenheitTemperature9);
+
+  let myArray = [];
+  for (let i=1; i<6; i++) {
+    let cel_dayx_Max = "cel_day"+i+"_Max";
+    console.log(array_cel_dayx_Max[i]);
+    let myObject = {
+      [cel_dayx_Max]: array_cel_dayx_Max[i-1].cel_dayx_Max,
+      "day":i, 
+      "tempHiDisplay": document.querySelector(`#day${i}_maxtemp`),
+      "tempLoDisplay": document.querySelector(`#day${i}_mintemp`),
+    };
+    myArray.push(myObject);
+  }
+  console.log(myArray[0]);
+  console.log(myArray[0].tempHiDisplay);
+
+/*   let tempHiDisplayDay1 = myArray[0].tempHiDisplay;
+  let tempHiDisplayDay2 = myArray[1].tempHiDisplay;
+  let tempHiDisplayDay3 = myArray[2].tempHiDisplay;
+  let tempHiDisplayDay4 = myArray[3].tempHiDisplay;
+  let tempHiDisplayDay5 = myArray[4].tempHiDisplay; */
+  myArray[0].tempHiDisplay = convertCToF(array_cel_dayx_Max[0].cel_dayx_Max);
+  myArray[1].tempHiDisplay = convertCToF(array_cel_dayx_Max[1].cel_dayx_Max);
+  myArray[2].tempHiDisplay = convertCToF(array_cel_dayx_Max[2].cel_dayx_Max);
+  myArray[3].tempHiDisplay = convertCToF(array_cel_dayx_Max[3].cel_dayx_Max);
+  myArray[3].tempHiDisplay = convertCToF(array_cel_dayx_Max[4].cel_dayx_Max);
+
+/*   let tempLoDisplayDay1 = myArray[0].tempLoDisplay;
+  let tempLoDisplayDay2 = myArray[1].tempLoDisplay;
+  let tempLoDisplayDay3 = myArray[2].tempLoDisplay;
+  let tempLoDisplayDay4 = myArray[3].tempLoDisplay;
+  let tempLoDisplayDay5 = myArray[4].tempLoDisplay;
+  tempLoDisplayDay1.innerHTML = convertCToF(cel_day1_Min);
+  tempLoDisplayDay2.innerHTML = convertCToF(cel_day1_Min);
+  tempLoDisplayDay3.innerHTML = convertCToF(cel_day1_Min);
+  tempLoDisplayDay4.innerHTML = convertCToF(cel_day1_Min);
+  tempLoDisplayDay5.innerHTML = convertCToF(cel_day1_Min); */
+  myArray[0].tempLoDisplay = convertCToF(array_cel_dayx_Min[0].cel_dayx_Min);
+  myArray[1].tempLoDisplay = convertCToF(array_cel_dayx_Min[1].cel_dayx_Min);
+  myArray[2].tempLoDisplay = convertCToF(array_cel_dayx_Min[2].cel_dayx_Min);
+  myArray[3].tempLoDisplay = convertCToF(array_cel_dayx_Min[3].cel_dayx_Min);
+  myArray[3].tempLoDisplay = convertCToF(array_cel_dayx_Min[4].cel_dayx_Min);
+
+
 } 
 
 function displayCelsiusTemperature(event) {
   event.preventDefault();
   fahrenheitLink.classList.remove("active");
   celsiusLink.classList.add("active");
-  let temperatureElement = document.querySelector("#temperature");
-  let tempHiDisplayDay1 = document.querySelector("#day1_maxtemp");
-  let tempLoDisplayDay1 = document.querySelector("#day1_mintemp");
-  let tempHiDisplayDay2 = document.querySelector("#day2_maxtemp");
-  let tempLoDisplayDay2 = document.querySelector("#day2_mintemp");
-  let tempHiDisplayDay3 = document.querySelector("#day3_maxtemp");
-  let tempLoDisplayDay3 = document.querySelector("#day3_mintemp");
-  let tempHiDisplayDay4 = document.querySelector("#day4_maxtemp");
-  let tempLoDisplayDay4 = document.querySelector("#day4_mintemp");
-  let tempHiDisplayDay5 = document.querySelector("#day5_maxtemp");
-  let tempLoDisplayDay5 = document.querySelector("#day5_mintemp");  
 
+  let temperatureElement = document.querySelector("#temperature");
   temperatureElement.innerHTML = Math.round(celsiusTemperature);
-  tempHiDisplayDay1.innerHTML = Math.round(cel_day1_Max);
-  tempLoDisplayDay1.innerHTML = Math.round(cel_day1_Min);
-  tempHiDisplayDay2.innerHTML = Math.round(cel_day2_Max);
-  tempLoDisplayDay2.innerHTML = Math.round(cel_day2_Min);
-  tempHiDisplayDay3.innerHTML = Math.round(cel_day3_Max);
-  tempLoDisplayDay3.innerHTML = Math.round(cel_day3_Min);
-  tempHiDisplayDay4.innerHTML = Math.round(cel_day4_Max);
-  tempLoDisplayDay4.innerHTML = Math.round(cel_day4_Min);
-  tempHiDisplayDay5.innerHTML = Math.round(cel_day5_Max);
-  tempLoDisplayDay5.innerHTML = Math.round(cel_day5_Min);
+
+  console.log(cel_day1_Max);
+
+  let myArray = [];
+  for (let i=1; i<6; i++) {
+    let cel_dayx_Max = "cel_day"+i+"_Max";
+    console.log(array_cel_dayx_Max[i]);
+    let myObject = {
+      [cel_dayx_Max]: array_cel_dayx_Max[i-1].cel_dayx_Max,
+      "day":i, 
+      "tempHiDisplay": document.querySelector(`#day${i}_maxtemp`),
+      "tempLoDisplay": document.querySelector(`#day${i}_mintemp`),
+    };
+    myArray.push(myObject);
+  }
+  console.log(myArray[0]);
+  console.log(myArray[0].tempHiDisplay);
+
+/*   let tempHiDisplayDay1 = myArray[0].tempHiDisplay;
+  let tempHiDisplayDay2 = myArray[1].tempHiDisplay;
+  let tempHiDisplayDay3 = myArray[2].tempHiDisplay;
+  let tempHiDisplayDay4 = myArray[3].tempHiDisplay;
+  let tempHiDisplayDay5 = myArray[4].tempHiDisplay; */
+  myArray[0].tempHiDisplay.innerHTML = Math.round(array_cel_dayx_Max[0].cel_dayx_Max);
+  myArray[1].tempHiDisplay.innerHTML = Math.round(array_cel_dayx_Max[1].cel_dayx_Max);
+  myArray[2].tempHiDisplay.innerHTML = Math.round(array_cel_dayx_Max[2].cel_dayx_Max);  
+  myArray[3].tempHiDisplay.innerHTML = Math.round(array_cel_dayx_Max[3].cel_dayx_Max);
+  myArray[4].tempHiDisplay.innerHTML = Math.round(array_cel_dayx_Max[4].cel_dayx_Max);
+
+  console.log(array_cel_dayx_Max[0].cel_dayx_Max);
+  console.log(cel_day1_Max);
+
+/*   let tempLoDisplayDay1 = array_cel_dayx_Min[0].tempLoDisplay;
+  let tempLoDisplayDay2 = array_cel_dayx_Min[1].tempLoDisplay;
+  let tempLoDisplayDay3 = array_cel_dayx_Min[2].tempLoDisplay;
+  let tempLoDisplayDay4 = array_cel_dayx_Min[3].tempLoDisplay;
+  let tempLoDisplayDay5 = array_cel_dayx_Min[4].tempLoDisplay; */
+
+  myArray[0].tempLoDisplay.innerHTML = Math.round(cel_day1_Min);
+  myArray[1].tempLoDisplay.innerHTML = Math.round(cel_day2_Min);
+  myArray[2].tempLoDisplay.innerHTML = Math.round(cel_day3_Min);
+  myArray[3].tempLoDisplay.innerHTML = Math.round(cel_day4_Min);
+  myArray[4].tempLoDisplay.innerHTML = Math.round(cel_day5_Min);
+
+  //keeping all of this hear to demosntrate two things:
+  //can use cel_day1_Min OR array_cel_dayx_Max[0].cel_dayx_Max
+  // can replace tempLoDisplayDay2 with myArray[2].tempLoDisplay.innerHTML
+
 }
 
 
 let celsiusTemperature = null;
 
-console.log(celsiusTemperature);
-let cel_day1_Max = null;
-let cel_day1_Min = null;
-let cel_day2_Max = null;
+let array_cel_dayx_Max = [];
+function add_dayx_Max(numberOfDays){
+  for (let i=1; i<numberOfDays+1; i++) {
+    let dayObject = {
+      "day":i, 
+      "cel_dayx_Max":null
+    };
+    array_cel_dayx_Max.push(dayObject);
+  }
+}
+add_dayx_Max(5);
+console.log(array_cel_dayx_Max[0].cel_dayx_Max);
+
+let cel_day1_Max = array_cel_dayx_Max[0].cel_dayx_Max;
+let cel_day2_Max = array_cel_dayx_Max[1].cel_dayx_Max;
+let cel_day3_Max = array_cel_dayx_Max[2].cel_dayx_Max;
+let cel_day4_Max = array_cel_dayx_Max[3].cel_dayx_Max;
+let cel_day5_Max = array_cel_dayx_Max[4].cel_dayx_Max;
+
+let array_cel_dayx_Min = [];
+function add_dayx_Min(numberOfDays){
+  for (let i=1; i<numberOfDays+1; i++) {
+    let dayObject = {
+      "day":i, 
+      "cel_dayx_Min":null
+    };
+    array_cel_dayx_Min.push(dayObject);
+  }
+  return array_cel_dayx_Min;
+}
+add_dayx_Min(5);
+
+let cel_day1_Min = array_cel_dayx_Min[0].cel_dayx_Min;
 let cel_day2_Min = null;
-let cel_day3_Max = null;
 let cel_day3_Min = null;
-let cel_day4_Max = null;
 let cel_day4_Min = null;
-let cel_day5_Max = null;
 let cel_day5_Min = null;
 
 let searchButton = document.querySelector("#search");
@@ -286,6 +401,7 @@ let fahrenheitLink= document.querySelector("#fahrenheit-link");
 fahrenheitLink.addEventListener("click", displayFahrenheitTemperature)
 
 search("New York");
+
 
 
 
